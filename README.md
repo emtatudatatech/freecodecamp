@@ -1,2 +1,2 @@
 # freecodecamp
-This houses my freeCodeCamp solutions for submission purposes
+This hosts my freeCodeCamp solutions and scripts for submissions and learning
