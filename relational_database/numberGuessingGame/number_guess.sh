@@ -16,45 +16,46 @@ read USERNAME
 # Check if the username exists
 USER_INFO=$($PSQL "SELECT username, games_played, best_game FROM users WHERE username='$USERNAME'")
 
-if [[ -n "$USER_INFO" ]]
+if [[ -n "$USER_INFO" ]];
 then
   # Username exists
   IFS='|' read -r DB_USERNAME GAMES_PLAYED BEST_GAME <<< "$USER_INFO"
-  echo "Welcome back, $DB_USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+  echo -e "\nWelcome back, $DB_USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 else
   # Username does not exist, create a new user
   $PSQL "INSERT INTO users (username) VALUES ('$USERNAME')"
-  echo "Welcome, $USERNAME! It looks like this is your first time here."
+  echo -e "\nWelcome, $USERNAME! It looks like this is your first time here."
 fi
 
 # Generate a random secret number between 1 and 1000
-SECRET_NUMBER=$((1 + RANDOM % 1000))
+SECRET_NUMBER=$((RANDOM % 1000 + 1))
 GUESSES=0
 
-echo "Guess the secret number between 1 and 1000:"
+echo -e "\nGuess the secret number between 1 and 1000:"
 
 while true
 do
+  # Increment guesses for every attempt
+  GUESSES=$((GUESSES + 1))
   read GUESS
 
-  if ! is_integer "$GUESS"
+  if ! is_integer $GUESS
   then
-    echo "That is not an integer, guess again:"
-    continue
-  fi
+    echo -e "\nThat is not an integer, guess again:"
+    # continue
 
-  GUESSES=$((GUESSES + 1))
-
-  if [[ "$GUESS" -gt "$SECRET_NUMBER" ]]
+  elif [[ $GUESS -gt $SECRET_NUMBER ]]
   then
-    echo "It's lower than that, guess again:"
+    echo -e "\nIt's lower than that, guess again:"
+    # continue
 
-  elif [[ "$GUESS" -lt "$SECRET_NUMBER" ]]
+  elif [[ $GUESS -lt $SECRET_NUMBER ]]
   then
-    echo "It's higher than that, guess again:"
+    echo -e "\nIt's higher than that, guess again:"
+    # continue
 
   else
-    echo "You guessed it in $GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
+    echo -e "\nYou guessed it in $GUESSES tries. The secret number was $SECRET_NUMBER. Nice job!"
 
     # Update user's game statistics
     $PSQL "UPDATE users SET games_played = games_played + 1 WHERE username='$USERNAME'"
