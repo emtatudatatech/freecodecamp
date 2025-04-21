@@ -60,11 +60,13 @@ ALTER TABLE public.users OWNER TO freecodecamp;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-INSERT INTO public.users VALUES ('user_1745178901371', 2, 151);
-INSERT INTO public.users VALUES ('user_1745178901372', 5, 260);
-INSERT INTO public.users VALUES ('user_1745178980578', 2, 419);
-INSERT INTO public.users VALUES ('user_1745178980579', 5, 21);
-INSERT INTO public.users VALUES ('Maina', 2, 6);
+INSERT INTO public.users VALUES ('user_1745247930897', 2, 123);
+INSERT INTO public.users VALUES ('user_1745247930898', 5, 174);
+INSERT INTO public.users VALUES ('Maina', 6, 6);
+INSERT INTO public.users VALUES ('user_1745247976945', 2, 125);
+INSERT INTO public.users VALUES ('user_1745247976946', 5, 15);
+INSERT INTO public.users VALUES ('user_1745247540625', 2, 305);
+INSERT INTO public.users VALUES ('user_1745247540626', 5, 430);
 
 
 --

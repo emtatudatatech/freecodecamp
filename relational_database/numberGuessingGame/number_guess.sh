@@ -16,16 +16,18 @@ read USERNAME
 # Check if the username exists
 USER_INFO=$($PSQL "SELECT username, games_played, best_game FROM users WHERE username='$USERNAME'")
 
-if [[ -n "$USER_INFO" ]];
-then
+echo "$USER_INFO" | while IFS='|' read DB_USERNAME GAMES_PLAYED BEST_GAME
+do
   # Username exists
-  IFS='|' read -r DB_USERNAME GAMES_PLAYED BEST_GAME <<< "$USER_INFO"
-  echo -e "\nWelcome back, $DB_USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
-else
-  # Username does not exist, create a new user
-  $PSQL "INSERT INTO users (username) VALUES ('$USERNAME')"
-  echo -e "\nWelcome, $USERNAME! It looks like this is your first time here."
-fi
+  if [[ -n "$USER_INFO" ]]
+  then
+    echo -e "\nWelcome back, $DB_USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
+  else
+    # Username does not exist, create a new user
+    $PSQL "INSERT INTO users (username) VALUES ('$USERNAME')"
+    echo -e "\nWelcome, $USERNAME! It looks like this is your first time here."
+  fi
+done
 
 # Generate a random secret number between 1 and 1000
 SECRET_NUMBER=$((RANDOM % 1000 + 1))
